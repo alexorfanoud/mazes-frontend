@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { cordsToIndex, edgeNode, Point, Boxify, RowStyle, ColumnStyle } from './Helpers'
+import { Boxify, RowStyle, ColumnStyle } from './Utils'
+import { cordsToIndex, edgeNode, Point } from '../../helpers/BoardFunctions'
+import { pathfinder } from '../../algorithms/pathfinder'
 
 import './Board.css'
 
@@ -15,7 +17,13 @@ export default function Board({maze}) {
             ))
         ))
     )
-
+    const onClick = () => {
+        let gridcpy = grid.slice();
+        pathfinder(Point(1,1),Point(4,4),gridcpy,'BFS').visited.map(vis => {
+            gridcpy[vis.i][vis.j] = 'V'
+        });
+        setGrid(gridcpy)
+    }
     return (
         <div className='board' >
             {
@@ -30,6 +38,7 @@ export default function Board({maze}) {
                         }
                     </div>
                 ))}
+            <button onClick={onClick}>solve</button>
         </div>
     )
 }
