@@ -20,3 +20,4 @@ export const RowStyle = (gridSize) => ({
 export const ColumnStyle = (gridSize) => ({
     width:`${100/gridSize}%`
 })
+

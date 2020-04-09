@@ -17,3 +17,8 @@ export const edgeNode = (node, gridSize) => {
     const {i,j} = node;
     return i === 0 || j===0 || i===gridSize - 1 || j===gridSize -1;
 }
+
+export const mapInputToGrid = (index,gridSize) => {
+    let previousCords = indexToCords(index,gridSize-2);
+    return Point(previousCords.i+1,previousCords.j+1)
+}
