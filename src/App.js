@@ -1,14 +1,13 @@
 import React from 'react';
 import './App.css';
 
-import Board from './components/Board/Board'
-import { SpiralMaze,EmptyMaze, SignupMaze, SpiralSlide } from './constants/Mazes'
+import LoginPage from './components/Pages/Login/LoginPage'
 
 function App() {
 
   return (
     <div className="App">
-      <Board Content={()=><div>hello</div>} contentSize={{hor:0.5,ver:0.5}}/>
+      <LoginPage />
     </div>
   );
 }

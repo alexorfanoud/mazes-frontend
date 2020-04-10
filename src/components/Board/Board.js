@@ -10,7 +10,7 @@ import './Board.css'
 export default function Board({maze, Content, contentSize}) {
     const difficulty = 100;
     const density = 1.2
-    const defaultSize = 24;
+    const defaultSize = 16;
     const [gridSize,setGridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : defaultSize)
     const [start,setStart] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='S'),gridSize):randomPositionGenerator(gridSize));
     const [grid,setGrid] = useState(
