@@ -9,8 +9,8 @@ export default function Box({type,animationDuration,animationDelay}) {
         setClassName(`box ${type}`)
     },[type])
     return (
-        <div className={className}>
-            {type}
+        <div className={className} style={{animationDuration:`${animationDuration}s`, animationDelay:`${animationDelay}s`}}>
+            {/* {animationDelay} */}
         </div>
     )
 }

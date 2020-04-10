@@ -3,13 +3,17 @@ import React from 'react'
 import { BoxTypes } from '../../constants/BoxTypes'
 import Box from '../Box/Box'
 
+export const gridNode = (type, duration, delay) => ({
+    type: BoxTypes(type),
+    animDuration : !!duration ? duration : 0,
+    animDelay : !!delay ? delay : 0
+})
 
-
-export const Boxify = (type, animDuration, animDelay) => (
+export const Boxify = (gridNode) => (
     <Box
-        type={BoxTypes(type)}
-        animationDuration={!!animDuration ? animDuration : 0}
-        animationDelay={!!animDelay ? animDelay : 0}
+        type={ gridNode.type }
+        animationDuration={ gridNode.animDuration }
+        animationDelay={ gridNode.animDelay }
     />
 )
 

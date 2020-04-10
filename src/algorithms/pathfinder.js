@@ -19,7 +19,12 @@ export const pathfinder = (start,target,grid,algorithm) => {
     while( toVisit.length() > 0 ){
         current  = toVisit.shift();
         if(nodeEquals(current,target)){
-
+            while( !nodeEquals(current,start)){
+                
+                current = previous.get(current);
+                path.unshift(current);
+            };
+            visited.shift(); path.shift();
             return { visited: visited, path:path}
         }
         visited.push(current);

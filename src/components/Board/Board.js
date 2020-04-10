@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Boxify, RowStyle, ColumnStyle } from './Utils'
+import { Boxify, RowStyle, ColumnStyle, gridNode } from './Utils'
 import { cordsToIndex, edgeNode, Point, mapInputToGrid } from '../../helpers/BoardFunctions'
 import { pathfinder } from '../../algorithms/pathfinder'
 
@@ -14,19 +14,43 @@ export default function Board({maze}) {
     const [grid,setGrid] = useState(
         Array(gridSize).fill().map( (_,i) => (
             Array(gridSize).fill().map( (_,j) => (
-                edgeNode(Point(i,j),gridSize) ? 'X' :
-                maze[cordsToIndex(i-1,j-1,gridSize - 2)]
+                edgeNode(Point(i,j),gridSize) ? gridNode('X') :
+                gridNode(maze[cordsToIndex(i-1,j-1,gridSize - 2)])
             ))
         ))
     )
-    const onClick = () => {
-        let gridcpy = grid.slice();
-        pathfinder(start,target,gridcpy,'BFS').visited.map(vis => {
-            gridcpy[vis.i][vis.j] = 'V';
+    const onClick = async () => {
+        let gridcpy_visited = grid.slice();
+        let gridcpy_path = grid.slice();
+        const { visited, path } = pathfinder(start,target,gridcpy_visited,'BFS')
+        visited.map((vis,order) => {
+            gridcpy_visited[vis.i][vis.j] = gridNode(
+                'V_A',                  //type
+                1,                      //duration (in s)
+                order/visited.length    //delay (in s)
+            );
             return 0;
         });
-        setGrid(gridcpy)
+        setGrid(gridcpy_visited)
+        await new Promise(resolve => {
+            setTimeout(resolve,( 1 + 1) * 1000)
+        })
+        visited.map(vis => {
+            gridcpy_path[vis.i][vis.j] = gridNode(
+                'V', 0, 0
+            )
+            return 0;
+        })
+        path.map((s_path,order) => {
+            gridcpy_path[s_path.i][s_path.j] = gridNode(
+                'P', 1, order/path.length
+            )
+            return 0;
+        }) 
+        setGrid(gridcpy_path);
+
     }
+
     return (
         <div className='board' >
             {
