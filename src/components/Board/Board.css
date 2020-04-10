@@ -1,5 +1,18 @@
+.grid{
+    width:100%;
+    height:100%;
+}
 .board{
     height:100%;
+    width:100%;
+    position: absolute;
+}
+.content{
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.9 );
+    color: wheat;
+    z-index: 5;
 }
 .board-row{
     display: flex;
