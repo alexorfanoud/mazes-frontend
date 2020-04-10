@@ -10,8 +10,9 @@ export const linePath = (source,target) => {
     if(srcRow === trgtRow) {
         let stepCol = srcCol < trgtCol ? 1 : -1;
         while(srcCol !== trgtCol){
+            
             srcCol=srcCol+stepCol;
-            res.push(Point(srcRow,srcCol))            
+        res.push(Point(srcRow,srcCol))
         }
         return res;
     }
@@ -19,8 +20,9 @@ export const linePath = (source,target) => {
     else if (srcCol === trgtCol){
         let stepRow = srcRow < trgtRow ? 1 : -1;
         while(srcRow !== trgtRow){
+            
             srcRow=srcRow+stepRow;
-            res.push(Point(srcRow,srcCol))            
+        res.push(Point(srcRow,srcCol))
         }
         return res;
     }

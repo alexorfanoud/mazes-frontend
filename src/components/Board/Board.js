@@ -1,28 +1,39 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Boxify, RowStyle, ColumnStyle, gridNode } from './Utils'
-import { cordsToIndex, edgeNode, Point, mapInputToGrid } from '../../helpers/BoardFunctions'
+import { Boxify, RowStyle, ColumnStyle } from './Utils'
+import { cordsToIndex, edgeNode, Point, mapInputToGrid, generateGrid, gridNode, randomPositionGenerator, nodeEquals } from '../../helpers/BoardFunctions'
 import { pathfinder } from '../../algorithms/pathfinder'
 
 import './Board.css'
 
 export default function Board({maze}) {
-    const [gridSize,setGridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : 16)
-    const [start,setStart] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='S'),gridSize):Point(1,1));
-    const [target,setTarget] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='T'),gridSize):Point(1,1));
+    const difficulty = 100;
+    const density = 1.2
+    const defaultSize = 16;
+    const [gridSize,setGridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : defaultSize)
+    const [start,setStart] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='S'),gridSize):randomPositionGenerator(gridSize));
     const [grid,setGrid] = useState(
-        Array(gridSize).fill().map( (_,i) => (
-            Array(gridSize).fill().map( (_,j) => (
-                edgeNode(Point(i,j),gridSize) ? gridNode('X') :
-                gridNode(maze[cordsToIndex(i-1,j-1,gridSize - 2)])
-            ))
-        ))
+        !!maze ? generateGrid(maze,gridSize):
+        generateGrid(null,gridSize, start, density)
     )
+    const [target,setTarget] = useState(
+        !!maze ? mapInputToGrid(maze.findIndex(el => el==='T'),gridSize):
+        () => {
+            const {visited,path} = pathfinder(start,Point(-1,-1),grid,'slide')
+            const targetPos = visited[Math.floor((visited.length-1) *(difficulty/100))];
+            let gridcpy = grid.slice();
+            gridcpy[targetPos.i][targetPos.j] = gridNode('T')
+            setGrid(gridcpy);
+            return targetPos;
+        }
+    );
+
+
     const onClick = async () => {
         let gridcpy_visited = grid.slice();
         let gridcpy_path = grid.slice();
-        const { visited, path } = pathfinder(start,target,gridcpy_visited,'BFS')
+        const { visited, path } = pathfinder(start,target,gridcpy_visited,'slide')
         visited.map((vis,order) => {
             gridcpy_visited[vis.i][vis.j] = gridNode(
                 'V_A',                  //type
@@ -42,9 +53,11 @@ export default function Board({maze}) {
             return 0;
         })
         path.map((s_path,order) => {
-            gridcpy_path[s_path.i][s_path.j] = gridNode(
-                'P', 1, order/path.length
-            )
+            if(!nodeEquals(s_path,target)) {
+                gridcpy_path[s_path.i][s_path.j] = gridNode(
+                    'P', 1, order/path.length
+                )
+            }
             return 0;
         }) 
         setGrid(gridcpy_path);

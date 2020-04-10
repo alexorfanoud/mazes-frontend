@@ -20,11 +20,12 @@ export const pathfinder = (start,target,grid,algorithm) => {
         current  = toVisit.shift();
         if(nodeEquals(current,target)){
             while( !nodeEquals(current,start)){
-                
-                current = previous.get(current);
+                algorithm==='slide' ? path = linePath(previous.get(current),current).concat(path):
                 path.unshift(current);
+                current = previous.get(current);
+                
             };
-            visited.shift(); path.shift();
+            visited.shift(); path.pop();
             return { visited: visited, path:path}
         }
         visited.push(current);
@@ -38,6 +39,7 @@ export const pathfinder = (start,target,grid,algorithm) => {
             return adj
         })
     }
+    return { visited: visited, path:path}
 
 }
 

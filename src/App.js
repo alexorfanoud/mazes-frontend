@@ -7,7 +7,7 @@ import { SpiralMaze,EmptyMaze, SignupMaze, SpiralSlide } from './constants/Mazes
 function App() {
   return (
     <div className="App">
-      <Board maze={SpiralSlide.maze}/>
+      <Board />
     </div>
   );
 }
