@@ -11,7 +11,7 @@ import './Board.css'
 
 
 export default function Board({maze, mazeId, Content, contentSize}) {
-    const requests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests //TODO STATE SELECTOR NEEDS FIX? UNDEFINED AT START?
+    const mazeRequests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests //TODO STATE SELECTOR NEEDS FIX? UNDEFINED AT START?
     const dispatch = useDispatch();
     const difficulty = 100;
     const density = 1.2
@@ -75,15 +75,16 @@ export default function Board({maze, mazeId, Content, contentSize}) {
     },[start,target,dispatch,mazeId,grid])
 
     useEffect(()=>{
-        if(!!requests && Object.keys(requests).length > 0){ //if there are existing requests, handle them
-            for (let key in requests){
-                if(requests[key].request==='solve'){
-                    requests[key].request='handled'
-                    Solve(requests[key].algorithm,key)
-                }
-            }
-        }        
-    }, [requests,Solve])
+        async function handleRequests () {            
+                for (let key in mazeRequests){
+                    if(mazeRequests[key].request==='solve'){
+                        mazeRequests[key].request='handled'
+                        await Solve(mazeRequests[key].algorithm,key) 
+                    }
+                }            
+        }
+        if(!!mazeRequests && Object.keys(mazeRequests).length > 0) handleRequests()  //if there are existing requests, handle them
+    }, [mazeRequests,Solve])
 
     return (
         <div className='grid'>
