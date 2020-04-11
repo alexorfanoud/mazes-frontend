@@ -1,7 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import LoginPage from './components/Pages/Login/LoginPage'
+import HomePage from './components/Pages/Home/HomePage'
+import Navbar from './components/NavBar/Navbar'
 import GuestRoute from './components/Routes/GuestRoute'
 import UserRoute from './components/Routes/UserRoute'
 
@@ -12,8 +14,11 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <UserRoute path='/' exact component={()=><div>hello</div>}/> {/*homepage */}
-        <GuestRoute path='/login' exact component={LoginPage}/>
+        <UserRoute path='/' component={Navbar} />
+        <Switch>
+          <UserRoute path='/' exact component={HomePage}/>
+          <GuestRoute path='/login' exact component={LoginPage}/>
+        </Switch>
       </Router>
     </div>
   );

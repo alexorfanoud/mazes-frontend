@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { LOGIN_SUCCESS } from '../../constants/ActionTypes'
+import { LOGIN_SUCCESS,LOGOUT_SUCCESS } from '../../constants/ActionTypes'
 
 export const LoginRequest = (user) => (
     dispatch => (
@@ -15,4 +15,22 @@ export const LoginRequest = (user) => (
 export const LoginSuccess = (user) => ({
     type: LOGIN_SUCCESS,
     payload: user
+})
+
+
+export const LogoutRequest = () => (
+    dispatch => (
+        axios.post('/auth/logout')
+            .then( response => {
+                console.log(response)
+                localStorage.removeItem('user')
+                delete axios.defaults.headers.common['authorisation']
+                dispatch(LogoutSuccess())
+                return response
+            })
+    )
+)
+
+export const LogoutSuccess = () => ({
+    type:LOGOUT_SUCCESS
 })

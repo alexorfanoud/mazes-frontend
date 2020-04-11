@@ -1,4 +1,4 @@
-import { MAZE_REQUEST, MAZE_REQUEST_RESOLVE} from '../../constants/ActionTypes'
+import { MAZE_REQUEST, MAZE_REQUEST_RESOLVE, MAZE_REQUEST_DELETE } from '../../constants/ActionTypes'
 
 export const MazeRequest = (payload) => ({
     type: MAZE_REQUEST,
@@ -7,5 +7,10 @@ export const MazeRequest = (payload) => ({
 
 export const MazeRequestResolve = (payload) => ({
     type: MAZE_REQUEST_RESOLVE,
+    payload
+})
+
+export const MazeRequestDelete = (payload) => ({
+    type: MAZE_REQUEST_DELETE,
     payload
 })

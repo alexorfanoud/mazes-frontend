@@ -22,3 +22,11 @@ export const updateState = (state,endpoints,payload) => {
     }
      
 }
+
+export const deleteStateItem = (state,endpoints) => {
+    for(let i=0;i<endpoints.length-1;i++){
+        state=state[endpoints[i]]
+    }
+    delete state[endpoints.pop()]
+    return state
+}

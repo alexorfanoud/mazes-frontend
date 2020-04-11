@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, batch } from 'react-redux'
 import {v4 as uuidv4} from 'uuid'
 
 import { LoginRequest, LoginSuccess } from '../../../actions/User/Authentication'
-import { MazeRequest } from '../../../actions/Mazes/Requests'
+import { MazeRequest, MazeRequestDelete } from '../../../actions/Mazes/Requests'
 import { SpiralMaze } from '../../../constants/Mazes'
 import LoginForm from '../../Forms/Login/LoginForm'
 import Board from '../../Board/Board'
@@ -15,6 +15,7 @@ export default function LoginPage() {
     const [requestId] = useState(uuidv4());
     const [userOpts,setUserOpts] = useState({})
     const Request = useSelector(state=> !!state.Mazes.requests[SpiralMaze.maze_id] ? state.Mazes.requests[SpiralMaze.maze_id][requestId] : {}) //TODO FIX STATE SELECROT? UNDEFINED ?
+
     const requestPayload = {
         path:[SpiralMaze.maze_id,requestId],
         info:{
@@ -24,8 +25,14 @@ export default function LoginPage() {
     }
 
     useEffect(()=>{
-        if(Request.status==='resolved') dispatch(LoginSuccess(userOpts))
-    },[Request,dispatch,userOpts])
+        if( !!Request && Request.status==='resolved') {
+            batch(()=>{
+                dispatch(MazeRequestDelete(requestPayload));
+                dispatch(LoginSuccess(userOpts))
+            })
+            
+        }
+    },[Request,dispatch,userOpts,requestPayload])
 
     const onSubmit = (user) => {
         return dispatch(LoginRequest(user))
