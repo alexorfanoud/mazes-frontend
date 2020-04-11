@@ -102,7 +102,7 @@ export const SpiralSlideBig =
 }
 export const EmptyMaze = 
 {
-    maze_name:'EmptyMaze',
+    maze_id:'EmptyMaze',
     maze:[
         'S','.','.','.','.','.','.','.','.','.','.','.','.','.','.',
         '.','.','.','.','.','.','.','.','.','.','.','.','.','.','.',

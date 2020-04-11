@@ -106,7 +106,6 @@ export default function Board({maze, mazeId, Content, contentSize}) {
                             }
                         </div>
                     ))}
-                <button onClick={Solve}>solve</button>
             </div>
         </div>
         

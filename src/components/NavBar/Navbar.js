@@ -15,9 +15,9 @@ export default function Navbar() {
 
     const urls = {
       'Home':'/',
-      'Messages':'/Messages',
-      'Friends':'/Friends',
-      'Create':'/Create'
+      'Messages':'/messages',
+      'Friends':'/friends',
+      'Create':'/create'
     }
     const className = (item)=>{
         return 'nav-item' + (activeItem===urls[item] ? ' active' : '')
