@@ -11,3 +11,14 @@ const store = createStore(
 )
 
 export default store
+
+
+export const updateState = (state,endpoints,payload) => {
+    if(endpoints.length === 0 ) return payload;
+    else {
+        let currentEndpoint = endpoints.shift();
+        if(!!state) return {...state,[currentEndpoint]:updateState(state[currentEndpoint],endpoints,payload)}
+        else return {[currentEndpoint]:updateState({},endpoints,payload)}
+    }
+     
+}

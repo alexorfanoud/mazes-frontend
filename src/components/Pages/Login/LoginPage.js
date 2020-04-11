@@ -14,11 +14,18 @@ export default function LoginPage() {
     const dispatch = useDispatch();
     const [requestId] = useState(uuidv4());
     const Request = useSelector(state=> !!state.Mazes.requests[SpiralMaze.maze_id] ? state.Mazes.requests[SpiralMaze.maze_id][requestId] : {}) //TODO FIX STATE SELECROT? UNDEFINED ?
+    // const requestPayload = {
+    //     mazeId : SpiralMaze.maze_id,
+    //     requestId: requestId,
+    //     request:'solve',
+    //     algorithm:'BFS'
+    // }
     const requestPayload = {
-        mazeId : SpiralMaze.maze_id,
-        requestId: requestId,
-        request:'solve',
-        algorithm:'BFS'
+        path:[SpiralMaze.maze_id,requestId],
+        info:{
+            request:'solve',
+            algorithm:'BFS',
+        }
     }
     useEffect(()=>{
         if(Request.status==='resolved') console.log('solved');//TODO HANDLE SUCCESSFUL LOGINREQUEST->SOLVED-> ?

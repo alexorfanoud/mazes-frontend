@@ -70,8 +70,7 @@ export default function Board({maze, mazeId, Content, contentSize}) {
             setTimeout(resolve,(2000)) // wait for path animation to finish
         });
         dispatch(MazeRequestResolve({
-            mazeId:mazeId,
-            requestId:requestId
+            path:[mazeId,requestId]
         }))
     },[start,target,dispatch,mazeId,grid])
 
