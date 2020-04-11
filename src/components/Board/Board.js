@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -35,7 +35,7 @@ export default function Board({maze, mazeId, Content, contentSize}) {
     );
 
 
-    const Solve = async (algorithm,requestId) => {
+    const Solve = useCallback(async (algorithm,requestId) => {
         let gridcpy_visited = grid.slice();
         let gridcpy_path = grid.slice();
         const { visited, path } = pathfinder(start,target,gridcpy_visited,algorithm)
@@ -73,16 +73,18 @@ export default function Board({maze, mazeId, Content, contentSize}) {
             mazeId:mazeId,
             requestId:requestId
         }))
-    }
+    },[start,target,dispatch,mazeId,grid])
+
     useEffect(()=>{
-        if(!!requests && Object.keys(requests).length > 0){
+        if(!!requests && Object.keys(requests).length > 0){ //if there are existing requests, handle them
             for (let key in requests){
                 if(requests[key].request==='solve'){
+                    requests[key].request='handled'
                     Solve(requests[key].algorithm,key)
                 }
             }
         }        
-    }, [requests])
+    }, [requests,Solve])
 
     return (
         <div className='grid'>

@@ -16,3 +16,14 @@ export default (state = initialState, { type, payload }) => {
         return state
     }
 }
+
+//state.requests[mazeId][requestId] = payload 
+//acc={...acc,!!acc[endpoint] ? ...acc[endpoint]}
+const updateState = (state,path,payload) => {
+    const endpoints = path.split('/'); //[state,requests,mazeId,requestId]
+    let currentEndpoint;
+    return endpoints.reduce((acc,endpoint) => {
+        
+    })
+
+}
