@@ -32,7 +32,7 @@ export default function LoginForm (props) {
         if(Object.keys(formErrors).length === 0){
             return props.onSubmit(data)
                     .catch( err => {
-                        setErrors(err.response ? {...err.response.data['Bad Request']} : {'global':err.message})
+                        setErrors(err.response ? {...err.response.data} : {'global':err.message})
                     })
         }
         else {

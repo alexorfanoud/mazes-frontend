@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import store from './Store'
+import { Provider } from 'react-redux'
+import axios from 'axios'
+
+import './index.css';
+
+axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.headers.common['authorisation'] = !!localStorage.user ? JSON.parse(localStorage.user).token : ''
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+      <App />
+  </Provider>
+   ,document.getElementById('root')
 );
 
