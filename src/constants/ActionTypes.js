@@ -1,1 +1,3 @@
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+
+export const MAZE_REQUEST = 'MAZE_REQUEST'

@@ -67,7 +67,7 @@ export default function Board({maze, Content, contentSize}) {
     return (
         <div className='grid'>
             {!!Content && Object.keys(contentSize).length===2 &&
-                <div className='content' style={contentStyle(contentSize,gridSize)}>
+                <div className='custom-content' style={contentStyle(contentSize,gridSize)}>
                     {Content()}
                 </div>
             }   

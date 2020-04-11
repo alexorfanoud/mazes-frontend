@@ -1,3 +1,5 @@
+import {MAZE_REQUEST} from '../constants/ActionTypes'
+
 const initialState = {
 
 }
@@ -5,8 +7,8 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
     switch (type) {
 
-    case 'typeName':
-        return { ...state, ...payload }
+    case MAZE_REQUEST:
+        return { ...state, requests : {...state.requests, [payload.mazeId]:[{requestId:payload.requestId, request:payload.request, status:'pending'}]} }
 
     default:
         return state

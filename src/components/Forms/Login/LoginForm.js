@@ -48,7 +48,7 @@ export default function LoginForm (props) {
         ))
     }
     
-    
+    console.log(errors)
 
     return (
             <div className='container'>
