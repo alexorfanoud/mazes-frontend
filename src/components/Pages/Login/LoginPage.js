@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {v4 as uuidv4} from 'uuid'
 
 import { LoginRequest } from '../../../actions/User/Authentication'
@@ -13,25 +13,25 @@ export default function LoginPage() {
 
     const dispatch = useDispatch();
     const [requestId] = useState(uuidv4());
-    console.log(requestId);
+    const Request = useSelector(state=> !!state.Mazes.requests[SpiralMaze.maze_id] ? state.Mazes.requests[SpiralMaze.maze_id][requestId] : {}) //TODO FIX STATE SELECROT? UNDEFINED ?
     const requestPayload = {
         mazeId : SpiralMaze.maze_id,
         requestId: requestId,
         request:'solve',
         algorithm:'BFS'
     }
+    useEffect(()=>{
+        if(Request.status==='resolved') console.log('solved');//TODO HANDLE SUCCESSFUL LOGINREQUEST->SOLVED-> ?
+    },[Request])
     const onSubmit = (user) => {
         return dispatch(LoginRequest(user))
             .then(response => {
                 dispatch(MazeRequest(requestPayload))
-
-                //dispatch(MazeRequest(SpiralMaze.maze_id, requestId, 'solve', 'BFS'))
-                //dispatch(requestmaze('solve',id,algorithm))
-                console.log(response)
+                //console.log(response)
             })
             
     }
     return (
-        <Board maze={SpiralMaze.maze} Content={()=><LoginForm onSubmit={onSubmit}/>} contentSize={{hor:0.3, ver:0.5}} />
+        <Board maze={SpiralMaze.maze} mazeId={SpiralMaze.maze_id} Content={()=><LoginForm onSubmit={onSubmit}/>} contentSize={{hor:0.3, ver:0.5}} />
     )
 }

@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { Boxify, RowStyle, ColumnStyle, contentStyle } from './Utils'
 import { cordsToIndex, edgeNode, Point, mapInputToGrid, generateGrid, gridNode, randomPositionGenerator, nodeEquals,  } from '../../helpers/BoardFunctions'
 import { pathfinder } from '../../algorithms/pathfinder'
+import { MazeRequestResolve } from '../../actions/Mazes/Requests'
 
 import './Board.css'
 
-export default function Board({maze, Content, contentSize}) {
+
+export default function Board({maze, mazeId, Content, contentSize}) {
+    const requests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests //TODO STATE SELECTOR NEEDS FIX? UNDEFINED AT START?
+    const dispatch = useDispatch();
     const difficulty = 100;
     const density = 1.2
     const defaultSize = 16;
@@ -30,10 +35,10 @@ export default function Board({maze, Content, contentSize}) {
     );
 
 
-    const onClick = async () => {
+    const Solve = async (algorithm,requestId) => {
         let gridcpy_visited = grid.slice();
         let gridcpy_path = grid.slice();
-        const { visited, path } = pathfinder(start,target,gridcpy_visited,'slide')
+        const { visited, path } = pathfinder(start,target,gridcpy_visited,algorithm)
         visited.map((vis,order) => {
             gridcpy_visited[vis.i][vis.j] = gridNode(
                 'V_A',                  //type
@@ -44,7 +49,7 @@ export default function Board({maze, Content, contentSize}) {
         });
         setGrid(gridcpy_visited)
         await new Promise(resolve => {
-            setTimeout(resolve,( 1 + 1) * 1000) // wait for visited animation to finish
+            setTimeout(resolve,2000) // wait for visited animation to finish
         })
         visited.map(vis => {
             gridcpy_path[vis.i][vis.j] = gridNode(
@@ -61,8 +66,23 @@ export default function Board({maze, Content, contentSize}) {
             return 0;
         }) 
         setGrid(gridcpy_path);
-
+        await new Promise(resolve => {
+            setTimeout(resolve,(2000)) // wait for path animation to finish
+        });
+        dispatch(MazeRequestResolve({
+            mazeId:mazeId,
+            requestId:requestId
+        }))
     }
+    useEffect(()=>{
+        if(!!requests && Object.keys(requests).length > 0){
+            for (let key in requests){
+                if(requests[key].request==='solve'){
+                    Solve(requests[key].algorithm,key)
+                }
+            }
+        }        
+    }, [requests])
 
     return (
         <div className='grid'>
@@ -84,7 +104,7 @@ export default function Board({maze, Content, contentSize}) {
                             }
                         </div>
                     ))}
-                <button onClick={onClick}>solve</button>
+                <button onClick={Solve}>solve</button>
             </div>
         </div>
         
@@ -93,4 +113,5 @@ export default function Board({maze, Content, contentSize}) {
 
 Board.propTypes= {
     maze:PropTypes.array,
+    mazeId:PropTypes.string.isRequired,
 }
