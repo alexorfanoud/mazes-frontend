@@ -15,7 +15,6 @@ export default (state = initialState, { type, payload }) => {
     case MAZE_REQUEST_DELETE:
          deleteStateItem(state,['requests',...payload.path]);
          return state
-//TODO : CREATE FUNCTIONS TO HANDLE THE STATE CHANGES
     default:
         return state
     }

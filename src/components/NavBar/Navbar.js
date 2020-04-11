@@ -12,7 +12,7 @@ export default function Navbar() {
     const location = useLocation()
     const dispatch = useDispatch();
     const [activeItem,setActiveItem] = useState(location.pathname)
-    console.log(activeItem)
+
     const urls = {
       'Home':'/',
       'Messages':'/Messages',
@@ -30,7 +30,7 @@ export default function Navbar() {
     const Logout = () => {
       dispatch(LogoutRequest())
         .catch(err => {
-          console.log(err)
+          console.log(err) //TODO DISPLAY MESSAGE ? 
         })
     }
 

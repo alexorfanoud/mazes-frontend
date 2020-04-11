@@ -11,7 +11,7 @@ import './Board.css'
 
 
 export default function Board({maze, mazeId, Content, contentSize}) {
-    const mazeRequests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests //TODO STATE SELECTOR NEEDS FIX? UNDEFINED AT START?
+    const mazeRequests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests 
     const dispatch = useDispatch();
     const difficulty = 100;
     const density = 1.2

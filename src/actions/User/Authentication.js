@@ -22,7 +22,6 @@ export const LogoutRequest = () => (
     dispatch => (
         axios.post('/auth/logout')
             .then( response => {
-                console.log(response)
                 localStorage.removeItem('user')
                 delete axios.defaults.headers.common['authorisation']
                 dispatch(LogoutSuccess())
