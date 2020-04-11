@@ -11,10 +11,11 @@
 
 .empty {
     background: rgb(63, 48, 117);
+  
 }
 
 .start{
-    background-color: rgb(204, 141, 5);
+    background-color: rgb(5, 204, 5);
 }
 
 .target{
@@ -30,7 +31,7 @@
     animation-name: visitedAnimation;
 }
 .path {
-    background-color: rgb(170, 230, 4);
+    background-color: rgb(5, 126, 45);
     animation-name: pathAnimation;
 }
 @keyframes visitedAnimation{
@@ -42,9 +43,9 @@
 }
 
 @keyframes pathAnimation{
-    0% {z-index: 0;transform: scale(1);background-color: rgb(209, 195, 2);}
-    25% {z-index: 1;transform: scale(1.1);background-color: rgb(197, 161, 3);}
-    50% {z-index: 2;transform: scale(1.3);background-color: rgb(199, 111, 10);}
-    75% {z-index: 1;transform: scale(1.1);background-color: rgb(165, 7, 2);}
-    100% {z-index: 0;transform: scale(1);background-color: rgb(255, 0, 0);}
+    0% {z-index: 0;transform: scale(1);background-color: rgb(5, 107, 39);}
+    25% {z-index: 1;transform: scale(1.1);background-color: rgb(19, 197, 3);}
+    50% {z-index: 2;transform: scale(1.3);background-color: rgb(10, 199, 158);}
+    75% {z-index: 1;transform: scale(1.1);background-color: rgb(2, 32, 165);}
+    100% {z-index: 0;transform: scale(1);background-color: rgb(0, 255, 34);}
 }
