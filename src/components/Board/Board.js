@@ -3,20 +3,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { Boxify, RowStyle, ColumnStyle, contentStyle } from './Utils'
-import { cordsToIndex, edgeNode, Point, mapInputToGrid, generateGrid, gridNode, randomPositionGenerator, nodeEquals,  } from '../../helpers/BoardFunctions'
+import { cordsToIndex, Point, mapInputToGrid, generateGrid, gridNode, randomPositionGenerator, nodeEquals, edgeNode,  } from '../../helpers/BoardFunctions'
 import { pathfinder } from '../../algorithms/pathfinder'
-import { MazeRequestResolve } from '../../actions/Mazes/Requests'
+import { MazeRequestResolve } from '../../actions/Mazes/Interactions'
 
 import './Board.css'
 
 
 export default function Board({maze, mazeId, Content, contentSize}) {
     const mazeRequests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests 
+    const mazeInteraction = useSelector(state => state.Mazes.interaction[mazeId])
     const dispatch = useDispatch();
     const difficulty = 100;
     const density = 1.2
     const defaultSize = 16;
-    const [gridSize,setGridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : defaultSize)
+    const [gridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : defaultSize)
     const [start,setStart] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='S'),gridSize):randomPositionGenerator(gridSize));
     const [grid,setGrid] = useState(
         !!maze ? generateGrid(maze,gridSize):
@@ -33,9 +34,55 @@ export default function Board({maze, mazeId, Content, contentSize}) {
             return targetPos;
         }
     );
+    const getGridArray = useCallback(() => {
+        return grid.reduce((acc,newRow,i) => (
+            acc.concat(newRow.reduce((colAcc,col,j) => {
+                if(edgeNode(Point(i,j),gridSize)) return colAcc
+                switch(col.type){
+                    case 'start' : return colAcc.concat('S');
+                    case 'target' : return colAcc.concat('T');
+                    case 'obstacle': return colAcc.concat('X');
+                    default : return colAcc.concat('.')
+                }
+            },'')
+            )
+        ),'')
+    },[grid,gridSize])
 
-
-    const Solve = useCallback(async (algorithm,requestId) => {
+    const onClickBox = (box) => {
+        let gridcpy = grid.slice()
+        if(!mazeInteraction) return
+        switch(mazeInteraction.mode){
+            case 'Edit':
+                switch(mazeInteraction.box){
+                    case 'Start':
+                        gridcpy[start.i][start.j] = {...gridcpy[start.i][start.j],type:'empty'}
+                        gridcpy[box.i][box.j] = {...gridcpy[box.i][box.j],type:'start'};
+                        if(nodeEquals(target,box)) setTarget(Point(-1,-1))
+                        setStart(box);
+                        break;
+                    case 'Target':
+                        gridcpy[target.i][target.j] = {...gridcpy[target.i][target.j],type:'empty'}
+                        gridcpy[box.i][box.j] = {...gridcpy[box.i][box.j],type:'target'}
+                        setTarget(box);
+                        break;
+                    case 'Obstacle':
+                        
+                        gridcpy[box.i][box.j] = gridcpy[box.i][box.j].type==='empty' ? {...gridcpy[box.i][box.j],type:'obstacle'}
+                        :gridcpy[box.i][box.j].type==='obstacle' ? {...gridcpy[box.i][box.j],type:'empty'}
+                        :gridcpy[box.i][box.j]
+                        break;
+                    default : break;
+                }
+                break;
+            case 'Play':
+                break;
+            default: break;
+        }
+        return setGrid(gridcpy);
+    }
+ 
+    const Solve = useCallback(async (algorithm) => {
         let gridcpy_visited = grid.slice();
         let gridcpy_path = grid.slice();
         const { visited, path } = pathfinder(start,target,gridcpy_visited,algorithm)
@@ -69,22 +116,35 @@ export default function Board({maze, mazeId, Content, contentSize}) {
         await new Promise(resolve => {
             setTimeout(resolve,(2000)) // wait for path animation to finish
         });
-        dispatch(MazeRequestResolve({
-            path:[mazeId,requestId]
-        }))
-    },[start,target,dispatch,mazeId,grid])
+        
+    },[start,target,grid])
 
-    useEffect(()=>{
+    useEffect(()=>{                                 //if there are existing requests, handle them
         async function handleRequests () {            
                 for (let key in mazeRequests){
                     if(mazeRequests[key].request==='solve'){
                         mazeRequests[key].request='handled'
-                        await Solve(mazeRequests[key].algorithm,key) 
+                        await Solve(mazeRequests[key].algorithm) 
+                        dispatch(MazeRequestResolve({
+                            path:[mazeId,key]
+                        }))
                     }
+                    else if(mazeRequests[key].request==='save'){
+                        mazeRequests[key].request='handled'
+                        console.log(getGridArray())
+                        dispatch(MazeRequestResolve({
+                            path:[mazeId,key],
+                            info:{
+                                maze:getGridArray()
+                            }
+                        }))
+                    }
+                    
+                    
                 }            
         }
-        if(!!mazeRequests && Object.keys(mazeRequests).length > 0) handleRequests()  //if there are existing requests, handle them
-    }, [mazeRequests,Solve])
+        if(!!mazeRequests && Object.keys(mazeRequests).length > 0) handleRequests()  
+    }, [mazeRequests,Solve,getGridArray,dispatch,mazeId])
 
     return (
         <div className='grid'>
@@ -99,7 +159,7 @@ export default function Board({maze, mazeId, Content, contentSize}) {
                         <div className='board-row' style={RowStyle(gridSize)} key={i}>
                             {
                                 row.map((col,j)=>(
-                                    <div className='board-column' style={ColumnStyle(gridSize)} key={cordsToIndex(i,j,gridSize)}>
+                                    <div className='board-column' style={ColumnStyle(gridSize)} key={cordsToIndex(i,j,gridSize)} onClick={()=>onClickBox(Point(i,j))}>
                                         {Boxify(col)}
                                     </div>
                                 ))

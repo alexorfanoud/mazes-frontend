@@ -1,16 +1,11 @@
-import { MAZE_REQUEST, MAZE_REQUEST_RESOLVE, MAZE_REQUEST_DELETE } from '../../constants/ActionTypes'
+import axios from 'axios'
 
-export const MazeRequest = (payload) => ({
-    type: MAZE_REQUEST,
-    payload
-})
-
-export const MazeRequestResolve = (payload) => ({
-    type: MAZE_REQUEST_RESOLVE,
-    payload
-})
-
-export const MazeRequestDelete = (payload) => ({
-    type: MAZE_REQUEST_DELETE,
-    payload
-})
+export const AddMaze = (maze) => (
+    dispatch => (
+        axios.post('/mazes',{maze:maze})
+            .then(response=>{
+                console.log(response)
+            })
+            
+    )
+)

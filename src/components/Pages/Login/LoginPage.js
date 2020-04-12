@@ -3,7 +3,7 @@ import { useDispatch, useSelector, batch } from 'react-redux'
 import {v4 as uuidv4} from 'uuid'
 
 import { LoginRequest, LoginSuccess } from '../../../actions/User/Authentication'
-import { MazeRequest, MazeRequestDelete } from '../../../actions/Mazes/Requests'
+import { MazeRequest, MazeRequestDelete } from '../../../actions/Mazes/Interactions'
 import { SpiralMaze } from '../../../constants/Mazes'
 import LoginForm from '../../Forms/Login/LoginForm'
 import Board from '../../Board/Board'
