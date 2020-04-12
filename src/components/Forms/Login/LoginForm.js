@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import InlineMessage from '../../Messages/Inline/InlineMessage'
 
@@ -70,7 +71,7 @@ export default function LoginForm (props) {
                     </Form.Field>
                     <Form.Field>
                         <Button secondary >Login</Button>
-                        <Button >Sign up</Button>
+                        <Button as={Link} to='/signup'>Sign up</Button>
                     </Form.Field>
                     
                 </Form>

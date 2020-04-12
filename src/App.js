@@ -8,6 +8,7 @@ import CreatePage from './components/Pages/Create/CreatePage'
 import Navbar from './components/NavBar/Navbar'
 import GuestRoute from './components/Routes/GuestRoute'
 import UserRoute from './components/Routes/UserRoute'
+import SignupPage from './components/Pages/Signup/SignupPage';
 
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
           <UserRoute path='/create' exact component={CreatePage}/>
           <UserRoute path='/maze/:id' exact component={PlayPage}/>
           <GuestRoute path='/login' exact component={LoginPage}/>
+          <GuestRoute path='/signup' exact component={SignupPage}/>
         </Switch>
       </Router>
     </div>

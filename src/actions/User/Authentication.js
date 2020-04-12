@@ -17,6 +17,16 @@ export const LoginSuccess = (user) => ({
     payload: user
 })
 
+export const SignupRequest = (user) => (
+    dispatch => (
+        axios.post('/auth/signup', {...user})
+            .then( response => {
+                localStorage.user = JSON.stringify(response.data);
+                axios.defaults.headers.common['authorisation'] = response.data.token
+                return response
+            })
+    )
+)
 
 export const LogoutRequest = () => (
     dispatch => (

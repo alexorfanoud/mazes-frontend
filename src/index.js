@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import './index.css';
 
-axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.baseURL = 'http://localhost:8765'
 axios.defaults.headers.common['authorisation'] = !!localStorage.user ? JSON.parse(localStorage.user).token : ''
 
 ReactDOM.render(
