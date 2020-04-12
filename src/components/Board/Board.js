@@ -60,7 +60,7 @@ export default function Board({maze, mazeId, Content, contentSize}) {
 
     const onClickBox = (box) => {        
         let gridcpy = grid.slice()
-        if(!mazeInteraction) return
+        if(!mazeInteraction || edgeNode(box)) return
         switch(mazeInteraction.mode){
             case 'Edit':
                 switch(mazeInteraction.box){

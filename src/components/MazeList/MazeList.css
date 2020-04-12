@@ -6,7 +6,7 @@
     flex-wrap: nowrap;
     justify-content: space-around;
     align-items: center;
-    background-color: cadetblue;
+    background-color: rgb(5, 72, 75);
 }
 .mazeList-item{
     height:20%;

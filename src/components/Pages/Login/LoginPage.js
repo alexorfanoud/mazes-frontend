@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid'
 
 import { LoginRequest, LoginSuccess } from '../../../actions/User/Authentication'
 import { MazeRequest, MazeRequestDelete } from '../../../actions/Mazes/Interactions'
-import { SpiralMaze } from '../../../constants/Mazes'
+import { SignupMaze } from '../../../constants/Mazes'
 import LoginForm from '../../Forms/Login/LoginForm'
 import Board from '../../Board/Board'
 import { getStateElement } from '../../../helpers/ReduxStore'
@@ -15,9 +15,9 @@ export default function LoginPage() {
     const dispatch = useDispatch();
     const [requestId] = useState(uuidv4());
     const [userOpts,setUserOpts] = useState({})
-    const RequestStatus = useSelector(state=> getStateElement(state,['Mazes','requests',SpiralMaze.maze_id,requestId,'status']))
+    const RequestStatus = useSelector(state=> getStateElement(state,['Mazes','requests',SignupMaze.maze_id,requestId,'status']))
     const requestPayload = {
-        path:[SpiralMaze.maze_id,requestId],
+        path:[SignupMaze.maze_id,requestId],
         info:{
             request:'solve',
             algorithm:'BFS',
@@ -43,6 +43,6 @@ export default function LoginPage() {
             
     }
     return (
-        <Board maze={SpiralMaze.maze} mazeId={SpiralMaze.maze_id} Content={()=><LoginForm onSubmit={onSubmit}/>} contentSize={{hor:0.37, ver:0.5}} />
+        <Board maze={SignupMaze.maze} mazeId={SignupMaze.maze_id} Content={()=><LoginForm onSubmit={onSubmit}/>} contentSize={{hor:0.37, ver:0.5}} />
     )
 }
