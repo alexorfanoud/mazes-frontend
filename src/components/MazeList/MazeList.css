@@ -1,0 +1,25 @@
+.mazeList{
+    height:100%;
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    background-color: cadetblue;
+}
+.mazeList-item{
+    height:20%;
+    width:100%;
+    border:1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mazeList-item:hover{
+    cursor: pointer;
+}
+.random{
+    background-color: black;
+    border:3px solid blueviolet
+}

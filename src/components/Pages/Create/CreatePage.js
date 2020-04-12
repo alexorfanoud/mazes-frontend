@@ -18,7 +18,7 @@ import { Icon } from 'semantic-ui-react'
 export default function CreatePage() {
     const mazeId = EmptyMaze.maze_id
     const dispatch = useDispatch();
-    const [activeItem,setActiveItem] = useState()           //TODO DISPLAY ACTIVE ITEM   
+    const [activeItem,setActiveItem] = useState()        
 
     const [solveRequestId] = useState(uuidv4())
     const [saveRequestId] = useState(uuidv4())

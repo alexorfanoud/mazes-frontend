@@ -68,9 +68,12 @@ export default function Board({maze, mazeId, Content, contentSize}) {
                         break;
                     case 'Obstacle':
                         
-                        gridcpy[box.i][box.j] = gridcpy[box.i][box.j].type==='empty' ? {...gridcpy[box.i][box.j],type:'obstacle'}
-                        :gridcpy[box.i][box.j].type==='obstacle' ? {...gridcpy[box.i][box.j],type:'empty'}
-                        :gridcpy[box.i][box.j]
+                        gridcpy[box.i][box.j] = 
+                            gridcpy[box.i][box.j].type==='empty' ||
+                            gridcpy[box.i][box.j].type==='visited'||
+                            gridcpy[box.i][box.j].type==='path' ? {...gridcpy[box.i][box.j],type:'obstacle'}
+                            :gridcpy[box.i][box.j].type==='obstacle' ? {...gridcpy[box.i][box.j],type:'empty'}
+                            :gridcpy[box.i][box.j]
                         break;
                     default : break;
                 }
