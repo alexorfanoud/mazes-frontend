@@ -8,21 +8,30 @@ import { pathfinder } from '../../algorithms/pathfinder'
 import { MazeRequestResolve } from '../../actions/Mazes/Interactions'
 
 import './Board.css'
+import { adjacent } from '../../algorithms/adjacent'
+import { useHistory } from 'react-router'
 
 
 export default function Board({maze, mazeId, Content, contentSize}) {
     const mazeRequests = useSelector(state => state.Mazes.requests[mazeId]) //listen for solve/save requests 
     const mazeInteraction = useSelector(state => state.Mazes.interaction[mazeId])
     const dispatch = useDispatch();
+    const history = useHistory();
     const difficulty = 100;
     const density = 1.2
     const defaultSize = 16;
     const [gridSize] = useState( !!maze ? Math.floor(Math.sqrt(maze.length)) + 2 : defaultSize)
     const [start,setStart] = useState(!!maze ? mapInputToGrid(maze.findIndex(el => el==='S'),gridSize):randomPositionGenerator(gridSize));
+
     const [grid,setGrid] = useState(
         !!maze ? generateGrid(maze,gridSize):
         generateGrid(null,gridSize, start, density)
     )
+    //set valid moves for play mode
+    const [validMoves,setValidMoves] = useState(()=>(
+        adjacent(start,grid,'slide')
+    ))
+    
     const [target,setTarget] = useState(
         !!maze ? mapInputToGrid(maze.findIndex(el => el==='T'),gridSize):
         () => {
@@ -49,21 +58,21 @@ export default function Board({maze, mazeId, Content, contentSize}) {
         ),'')
     },[grid,gridSize])
 
-    const onClickBox = (box) => {
+    const onClickBox = (box) => {        
         let gridcpy = grid.slice()
         if(!mazeInteraction) return
         switch(mazeInteraction.mode){
             case 'Edit':
                 switch(mazeInteraction.box){
                     case 'Start':
-                        gridcpy[start.i][start.j] = {...gridcpy[start.i][start.j],type:'empty'}
-                        gridcpy[box.i][box.j] = {...gridcpy[box.i][box.j],type:'start'};
+                        gridcpy[start.i][start.j] = gridNode('.')
+                        gridcpy[box.i][box.j] = gridNode('S');
                         if(nodeEquals(target,box)) setTarget(Point(-1,-1))
                         setStart(box);
                         break;
                     case 'Target':
-                        gridcpy[target.i][target.j] = {...gridcpy[target.i][target.j],type:'empty'}
-                        gridcpy[box.i][box.j] = {...gridcpy[box.i][box.j],type:'target'}
+                        gridcpy[target.i][target.j] = gridNode('.')
+                        gridcpy[box.i][box.j] = gridNode('T')
                         setTarget(box);
                         break;
                     case 'Obstacle':
@@ -71,14 +80,21 @@ export default function Board({maze, mazeId, Content, contentSize}) {
                         gridcpy[box.i][box.j] = 
                             gridcpy[box.i][box.j].type==='empty' ||
                             gridcpy[box.i][box.j].type==='visited'||
-                            gridcpy[box.i][box.j].type==='path' ? {...gridcpy[box.i][box.j],type:'obstacle'}
-                            :gridcpy[box.i][box.j].type==='obstacle' ? {...gridcpy[box.i][box.j],type:'empty'}
+                            gridcpy[box.i][box.j].type==='path' ? gridNode('X')
+                            :gridcpy[box.i][box.j].type==='obstacle' ? gridNode('.')
                             :gridcpy[box.i][box.j]
                         break;
                     default : break;
                 }
                 break;
             case 'Play':
+                if(validMoves.findIndex(el => nodeEquals(el,box)) >= 0){
+                    if(nodeEquals(box,target)) history.push('/') //TODO HANDLE WIN
+                    gridcpy[box.i][box.j]=gridNode('S');
+                    gridcpy[start.i][start.j]=gridNode('.');
+                    setStart(box)
+                    setValidMoves(adjacent(box,grid,'slide'))
+                };
                 break;
             default: break;
         }
