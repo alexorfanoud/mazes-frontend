@@ -39,6 +39,7 @@ export const pathfinder = (start,target,grid,algorithm) => {
             return adj
         })
     }
+    visited.shift();
     return { visited: visited, path:path}
 
 }

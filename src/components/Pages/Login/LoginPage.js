@@ -7,6 +7,7 @@ import { MazeRequest, MazeRequestDelete } from '../../../actions/Mazes/Interacti
 import { SpiralMaze } from '../../../constants/Mazes'
 import LoginForm from '../../Forms/Login/LoginForm'
 import Board from '../../Board/Board'
+import { getStateElement } from '../../../helpers/ReduxStore'
 
 
 export default function LoginPage() {
@@ -14,8 +15,7 @@ export default function LoginPage() {
     const dispatch = useDispatch();
     const [requestId] = useState(uuidv4());
     const [userOpts,setUserOpts] = useState({})
-    const Request = useSelector(state=> !!state.Mazes.requests[SpiralMaze.maze_id] ? state.Mazes.requests[SpiralMaze.maze_id][requestId] : {}) //TODO FIX STATE SELECROT? UNDEFINED ?
-
+    const RequestStatus = useSelector(state=> getStateElement(state,['Mazes','requests',SpiralMaze.maze_id,requestId,'status']))
     const requestPayload = {
         path:[SpiralMaze.maze_id,requestId],
         info:{
@@ -25,14 +25,14 @@ export default function LoginPage() {
     }
 
     useEffect(()=>{
-        if( !!Request && Request.status==='resolved') {
+        if( RequestStatus==='resolved') {
             batch(()=>{
                 dispatch(MazeRequestDelete(requestPayload));
                 dispatch(LoginSuccess(userOpts))
             })
             
         }
-    },[Request,dispatch,userOpts,requestPayload])
+    },[RequestStatus,dispatch,userOpts,requestPayload])
 
     const onSubmit = (user) => {
         return dispatch(LoginRequest(user))

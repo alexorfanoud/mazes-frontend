@@ -1,5 +1,5 @@
 import {MAZE_REQUEST, MAZE_REQUEST_RESOLVE, MAZE_REQUEST_DELETE, MAZE_INTERACTION } from '../constants/ActionTypes'
-import { updateState,deleteStateItem } from '../Store'
+import { updateState,deleteStateItem } from '../helpers/ReduxStore'
 
 const initialState = {
     requests : {},

@@ -1,16 +1,20 @@
-const deleteStateItem = (state,endpoints) => {//['mazes','request']delete obj[path.pop()];
-    for(let i=0;i<endpoints.length-1;i++){
-        state=state[endpoints[i]]
+ const getStateElement = (state,path) => {
+    for(let i=0;i<path.length;i++){
+        if(!state) return null;
+        state=state[path[i]]
     }
-    delete state[endpoints.pop()]
-    // delete endpoints.slice(0,endpoints.length-1).reduce((acc,endpoint)=>(
-    //     acc[endpoint]
-    // ),state)[endpoints[endpoints.length-1]]
     return state
 }
+let state = {
+    Mazes:{
+        requests:{
+            maze1:{
+                req1:{status:'solved'}
+            }
+        },
+        interactions:{
 
-let state = {'user':{'1':1,'2':2}, 'mazes':{'request':{'1':1,'2':2}}}
-;
-//delete state['mazes']['request']['1']
-console.log(deleteStateItem(state,['mazes','request']))
-console.log(state)
+        }
+    }
+}
+console.log(getStateElement(state,['Mazes','requests','maze1']))

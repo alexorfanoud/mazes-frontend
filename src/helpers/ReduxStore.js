@@ -1,18 +1,3 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension';
-import RootReducer from './Reducers/index.js'
-
-const store = createStore(
-    RootReducer,
-    composeWithDevTools(
-        applyMiddleware(thunk)
-    )
-)
-
-export default store
-
-
 export const updateState = (state,endpoints,payload) => {
     if(endpoints.length === 0 ) return payload;
     else {
@@ -28,5 +13,13 @@ export const deleteStateItem = (state,endpoints) => {
         state=state[endpoints[i]]
     }
     delete state[endpoints.pop()]
+    return state
+}
+
+export const getStateElement = (state,path) => {
+    for(let i=0;i<path.length;i++){
+        if(!state) return null;
+        state=state[path[i]]
+    }
     return state
 }
