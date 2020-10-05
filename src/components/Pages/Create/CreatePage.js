@@ -69,7 +69,7 @@ export default function CreatePage() {
                 </div>
                 <div className={className('Solve')} onClick={()=>handleMazeRequests('solve',mazeId,solveRequestId,dispatch)}>
                     <Icon name='lightbulb' size='huge' color='violet'/>
-                    <h3>Solve</h3>
+                    <h3>Ricochet</h3>
                 </div>
                 <div className={className('Save')} onClick={()=>handleMazeRequests('save',mazeId,saveRequestId,dispatch)}>
                     <Icon name='plus' size='huge' color='green'/>
