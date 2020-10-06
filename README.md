@@ -1,15 +1,25 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Frontend for fullstack pathfinding visualisation project
+### Dependencies
+1. [Node](https://github.com/nodejs/node)
+2. Backend server to handle requests https://github.com/alexorfanoud/mazes-backend
 
-In the project directory, you can run:
+### To run:
+1. npm install
+2. npm start
 
-### `npm start`
+Frontend server will run at http://localhost:3000/
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Allows authenticated users to enter server
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/LoginPage.png "PlayPage")
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Can automatically create random mazes in order to perform different pathfinding algorithms
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/PlayPage.png "PlayPage")
+
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/BFS_SOL.png "PlayPage")
+
+## User has the ability to create and save his custom mazes
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/Create.png "PlayPage")
 
 
