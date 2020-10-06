@@ -20,5 +20,5 @@ Frontend server will run at http://localhost:3000/
 ![alt text](https://github.com/alexorfanoud/mazes-frontend/blob/master/src/common/images/BFS_SOL.png "PlayPage")
 
 ## User has the ability to create and save his custom mazes
-![alt text](https://github.com/alexorfanoud/mazes-frontend/blob/master/src/common/images/Create.png "PlayPage")
+![alt text](https://github.com/alexorfanoud/mazes-frontend/blob/master/src/common/images/createPage.png "PlayPage")
 
