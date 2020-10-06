@@ -12,14 +12,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Frontend server will run at http://localhost:3000/
 
 ## Allows authenticated users to enter server
-![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/LoginPage.png "PlayPage")
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/common/images/LoginPage.png "PlayPage")
 
 ## Can automatically create random mazes in order to perform different pathfinding algorithms
-![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/PlayPage.png "PlayPage")
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/common/images/PlayPage.png "PlayPage")
 
-![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/BFS_SOL.png "PlayPage")
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/common/images/BFS_SOL.png "PlayPage")
 
 ## User has the ability to create and save his custom mazes
-![alt text](https://github.com/alexorfanoud/mazes-frontend/src/src/common/images/Create.png "PlayPage")
+![alt text](https://github.com/alexorfanoud/mazes-frontend/src/common/images/Create.png "PlayPage")
 
 
